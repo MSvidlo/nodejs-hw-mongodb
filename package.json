@@ -13,7 +13,7 @@
     "thanos": "node src/scripts/thanos.js",
     "remove-all": "node src/scripts/removeAllContacts.js",
      "lint": "eslint src/**/*.js",
-    "start": "node ./src/index.js",
+    "start": "node ./src/server.js",
     "dev": "nodemon src/index.js"
   },
   "keywords": [],
