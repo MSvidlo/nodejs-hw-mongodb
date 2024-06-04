@@ -3,6 +3,7 @@ import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { env } from './utils/env';
+import { getAllContacts, getContactsById } from './services/contacts';
 
 
 dotenv.config();
@@ -28,7 +29,54 @@ export const setupServer = () => {
     });
   });
 
-  app.use('*', (req, res, next) => {
+
+
+    app.get('/contacts', async (req, res) => {
+        try {
+               const contacts = await getAllContacts();
+        res.status(200).json({
+            status: "success",
+            data: contacts,
+            message: "Successfully found contacts!"
+        })
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+
+        }
+
+    });
+    app.get('/contacts/:contactId', async (req, res) => {
+        try {
+             const { contactId } = req.params;
+            const contact = await getContactsById(contactId);
+            if (contact) {
+                res.status(200).json({
+                    status: 'succes',
+                    message: `Successfully found contact with id ${contactsId}!`,
+                    data: contact,
+
+                });
+            }
+            else {
+                res.status(404).json({
+        status: 'error',
+        message: `Contact with id ${contactId} not found.`,
+      });
+
+    }
+
+}
+        catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error.message,
+            });
+
+             app.use('*', (req, res, next) => {
     res.status(404).json({
       message: 'Not found',
     });
@@ -39,6 +87,7 @@ export const setupServer = () => {
       message: 'Something went wrong',
       error: err.message,
     });
+
   });
 
   app.listen(PORT, () => {
