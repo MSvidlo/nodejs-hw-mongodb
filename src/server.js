@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { getAllContacts, getContactsById } from './services/contacts.js';
 
-
+dotenv.config();
 const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
@@ -24,38 +24,60 @@ export const setupServer = () => {
 
   app.get('/', (req, res) => {
     res.json({
-      message: 'Hello',
+      message: 'Hello world!',
     });
   });
 
   app.get('/contacts', async (req, res) => {
-    const contacts = await getAllContacts();
-
-    res.status(200).json({
-      status: 200,
-      message: 'Successfully found contacts!',
-      data: contacts,
-    });
+    try {
+      const contacts = await getAllContacts();
+      res.status(200).json({
+        status: "success",
+        data: contacts,
+        message: "Successfully found contacts!"
+      });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
   });
 
   app.get('/contacts/:contactId', async (req, res) => {
-    const { contactId } = req.params;
-    const student = await getContactById(contactId);
-
-    res.status(200).json({
-      status: 200,
-      message: `Successfully found contact with id ${contactId}!`,
-      data: student,
-    });
+    try {
+      const { contactId } = req.params;
+      const contact = await getContactsById(contactId);
+      if (contact) {
+        res.status(200).json({
+          status: 'success',
+          message: `Successfully found contact with id ${contactId}!`,
+          data: contact,
+        });
+      } else {
+        res.status(404).json({
+          status: 'error',
+          message: `Contact with id ${contactId} not found.`,
+        });
+      }
+    } catch (error) {
+      res.status(500).json({
+        status: 'error',
+        message: error.message,
+      });
+    }
   });
 
-  app.use('*', (req, res, next) => {
+  app.use('*', (req, res) => {
     res.status(404).json({
       message: 'Not found',
     });
   });
 
+  
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
+
