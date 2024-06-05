@@ -4,7 +4,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { getAllContacts, getContactsById } from './services/contacts.js';
-import mongoose from 'mongoose';
 
 dotenv.config();
 const PORT = Number(env('PORT', '3000'));
@@ -38,7 +37,7 @@ export const setupServer = () => {
         message: "Successfully found contacts!"
       });
     } catch (error) {
-      console.error('Error fetching contacts:', error.message);
+      console.error(error.message);
       res.status(500).json({
         status: 'error',
         message: error.message,
@@ -63,7 +62,6 @@ export const setupServer = () => {
         });
       }
     } catch (error) {
-      console.error('Error fetching contact by ID:', error.message);
       res.status(500).json({
         status: 'error',
         message: error.message,
@@ -78,7 +76,6 @@ export const setupServer = () => {
   });
 
   app.use((err, req, res, next) => {
-    console.error('Server error:', err.message);
     res.status(500).json({
       message: 'Something went wrong',
       error: err.message,
@@ -88,20 +85,6 @@ export const setupServer = () => {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
-  const MONGODB_USER = process.env.MONGODB_USER;
-  const MONGODB_PASSWORD = process.env.MONGODB_PASSWORD;
-  const MONGODB_URL = process.env.DB_NAME;
-
-  const connectionString = `mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_URL}/?retryWrites=true&w=majority`;
-
-  mongoose.connect(connectionString, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 10000, // Таймаут підключення
-  }).then(() => {
-    console.log('Connected to the database');
-  }).catch((error) => {
-    console.error('Database connection error:', error.message);
-  });
 };
+
+setupServer();
