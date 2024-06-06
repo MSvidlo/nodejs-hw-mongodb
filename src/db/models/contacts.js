@@ -15,7 +15,7 @@ const contactSchema = new Schema(
       type: String,
       validate: {
         validator: function (v) {
-          // Optional email validation using regex
+
           return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v);
         },
         message: props => `${props.value} is not a valid email address!`,
@@ -34,7 +34,7 @@ const contactSchema = new Schema(
     },
   },
   {
-    timestamps: true, // This will automatically add `createdAt` and `updatedAt` fields
+    timestamps: true, 
   }
 );
 
