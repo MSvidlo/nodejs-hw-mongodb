@@ -34,11 +34,11 @@ const contactSchema = new Schema(
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 
-const contactsCollection  = mongoose.model('contacts', contactSchema);
+const contactsCollection  = mongoose.model('Contacts', contactSchema);
 
 export default contactsCollection
 
