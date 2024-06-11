@@ -9,7 +9,7 @@ import contactsRouter from './routers/contacts.js'
 import { errorHandler } from './middlewares/errorHandler.js';
 
 dotenv.config();
-const PORT = Number(env('PORT', '3000'));
+const PORT = Number(env('PORT', '3002'));
 
 export const setupServer = () => {
   const app = express();
