@@ -17,6 +17,7 @@ export const changeContact = async (contactId, contactData) => {
         {
             new: true,
             includeResultMetadata: true,
+        }
 );
   if (!rawResult || !rawResult.value) return null;
  return {
