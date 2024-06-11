@@ -6,7 +6,23 @@ export const getAllContacts = async () => {
     return contacts;
 };
 
-export const getContactsById = async (contactId) => {
-    const contact = await contactsCollection.findById(contactId);
-    return contact;
+export const getContactsById = async (contactId) => contactsCollection.findById(contactId);
+
+export const createContact =(contactData) => contactsCollection.create(contactData);
+
+export const changeContact = async (contactId, contactData) => {
+    const rawResult = await contactsCollection.findOneAndUpdate(
+        { _id: contactId },
+        contactData,
+        {
+            new: true,
+            includeResultMetadata: true,
+);
+  if (!rawResult || !rawResult.value) return null;
+ return {
+    contact: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+  };
 }
+
+export const deleteContact = (contactId) =>contactsCollection.findByIdAndDelete(contactId);
