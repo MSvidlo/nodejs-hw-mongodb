@@ -2,8 +2,11 @@ import { Schema } from 'mongoose';
 
 import mongoose from 'mongoose';
 
-const contactSchema = new Schema(
-  {  name: {
+
+
+const contactSchema = new mongoose.Schema(
+  {
+    name: {
       type: String,
       required: true,
     },
@@ -31,7 +34,16 @@ const contactSchema = new Schema(
       enum: ['work', 'home', 'personal'],
       required: true,
       default: 'personal',
-    },
+    }
+  },
+     {
+  toJSON: {
+    transform: function(doc, ret) {
+      delete ret.__v;
+      return ret;
+    }
+  }
+
   },
   {
     timestamps: true,
