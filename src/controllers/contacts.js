@@ -3,7 +3,7 @@ import {changeContact, createContact, deleteContact, getAllContacts, getContacts
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 
-export const getContactsController = async (req, res, next) => {
+export const getContactController = async (req, res, next) => {
   try {
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query);
