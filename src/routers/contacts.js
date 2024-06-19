@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
-import { createContactController, deleteContactController, getContactByIdController, getContactController, patchContactController } from '../controllers/contacts.js';
+import { createContactsController, deleteContactController, getContactByIdController, getContactController, patchContactController } from '../controllers/contacts.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { createContactSchema } from '../validation/contatcs.js';
 
@@ -14,7 +14,7 @@ router.get('/:contactId', ctrlWrapper(getContactByIdController));
 
 router.post('/',
     validateBody(createContactSchema),
-    ctrlWrapper(createContactController));
+    ctrlWrapper(createContactsController));
 
 router.patch('/:contactId',
     validateBody(createContactSchema),
