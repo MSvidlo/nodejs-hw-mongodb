@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { env } from './utils/env.js';
 import { getAllContacts, getContactsById } from './services/contacts.js';
 import { notFoundHandler } from './middlewares/notFoundHandlers.js';
-import contactsRouter from './routers/contacts.js'
+import router from './routers/index.js'
 import { errorHandler } from './middlewares/errorHandler.js';
 
 dotenv.config();
@@ -31,7 +31,7 @@ export const setupServer = () => {
     });
    });
 
-  app.use('/contacts', contactsRouter);
+  app.use('/contacts', router);
 
   app.use(errorHandler);
 
