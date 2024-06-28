@@ -10,6 +10,7 @@ export const createContactShema = Joi.object({
     .max(20)
     .valid('work', 'home', 'personal')
     .default('personal'),
+   userId: Joi.string().required(),
 });
 
 export const updateContactsShema = Joi.object({

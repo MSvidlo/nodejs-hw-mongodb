@@ -14,7 +14,8 @@ export const getContactController = async (req, res, next) => {
       perPage,
       sortBy,
       sortOrder,
-      filter,
+        filter,
+      userId,
     });
 
     res.json({
@@ -29,6 +30,7 @@ export const getContactController = async (req, res, next) => {
 
 export const getContactByIdController = async (req, res, next) => {
     const { contactId } = req.params;
+    const userId = req.user._id;
     try {
         const contact = await getContactsById(contactId);
         if (!contact) {
@@ -60,6 +62,7 @@ export const createContactController = async (req, res, next) => {
 
 export const patchContactController = async (req, res, next) => {
     const { contactId } = req.params;
+     const userId = req.user._id;
     try {
         const result = await changeContact(contactId, req.body);
         if (!result) {
@@ -78,6 +81,7 @@ export const patchContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
     const { contactId } = req.params;
+     const userId = req.user._id;
     try {
         const contact = await deleteContact(contactId);
         if (!contact) {
