@@ -1,5 +1,7 @@
-import { model, Schema } from 'mangoose';
+import { model} from 'mangoose';
 
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const usersSchema = new Schema(
     {
@@ -10,7 +12,7 @@ const usersSchema = new Schema(
         password: {
             type:String,required:true
         },
-        
+
 
     },
     { timestamps: true, versionKey: false },
