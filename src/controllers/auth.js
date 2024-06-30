@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { registerUser } from "../services/auth.js";
 import { loginUser } from "../services/auth.js";
 import { ONE_DAY } from "../constants/index.js";
@@ -65,3 +66,16 @@ export const refreshUserSessionController = async (req, res) => {
     },
   });
 };
+=======
+import {registerUser} from '../services/auth.js'
+
+
+export const registerUserController = async (req, res) => {
+    const user = await registerUser(req.body);
+    res.json({
+        status: 201,
+        message: 'Successfully registered a user!',
+        data:user,
+    })
+}
+>>>>>>> 3cf05c1179c0593764e2a680c7f8a3882db73021
