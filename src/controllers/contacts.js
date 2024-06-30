@@ -1,21 +1,36 @@
 import createHttpError from 'http-errors';
 import {changeContact, createContact, deleteContact, getAllContacts, getContactsById} from '../services/contacts.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getContactController = async (req, res, next) => {
-    try {
-        const contacts = await getAllContacts();
-        res.json({
-            status: 200,
-            message: 'Successfully found contacts!',
-            data: contacts,
-        });
-    } catch (error) {
-        next(error);
-    }
+  try {
+    const { page, perPage } = parsePaginationParams(req.query);
+    const { sortBy, sortOrder } = parseSortParams(req.query);
+    const filter = parseFilterParams(req.query);
+    const contacts = await getAllContacts({
+      page,
+      perPage,
+      sortBy,
+      sortOrder,
+        filter,
+      userId,
+    });
+
+    res.json({
+      status: 200,
+      message: 'Successfully found contacts!',
+      data: contacts,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const getContactByIdController = async (req, res, next) => {
-    const { contactId } = req.params;  
+    const { contactId } = req.params;
+    const userId = req.user._id;
     try {
         const contact = await getContactsById(contactId);
         if (!contact) {
@@ -47,6 +62,7 @@ export const createContactController = async (req, res, next) => {
 
 export const patchContactController = async (req, res, next) => {
     const { contactId } = req.params;
+     const userId = req.user._id;
     try {
         const result = await changeContact(contactId, req.body);
         if (!result) {
@@ -65,6 +81,7 @@ export const patchContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
     const { contactId } = req.params;
+     const userId = req.user._id;
     try {
         const contact = await deleteContact(contactId);
         if (!contact) {
