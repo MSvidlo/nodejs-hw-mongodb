@@ -1,7 +1,5 @@
-import { model} from 'mangoose';
+import { model, Schema } from 'mongoose';
 
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
 const usersSchema = new Schema(
     {

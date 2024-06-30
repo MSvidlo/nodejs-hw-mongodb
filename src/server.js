@@ -7,7 +7,7 @@ import { getAllContacts, getContactsById } from './services/contacts.js';
 import { notFoundHandler } from './middlewares/notFoundHandlers.js';
 import router from './routers/index.js'
 import { errorHandler } from './middlewares/errorHandler.js';
-import { contactsRouter } from './routers/contacts.js';
+import contactsRouter from './routers/contacts.js';
 import cookieParser from 'cookie-parser';
 
 

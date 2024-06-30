@@ -1,4 +1,4 @@
-import { UsersCollection } from "../db/models/user"
+import { UsersCollection } from "../db/models/user.js"
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { randomBytes } from 'crypto';
@@ -39,7 +39,7 @@ export const logautUser = async (sessionId) => {
     })
 };
 
-createSesiion = () => {
+const createSesiion = () => {
     const accessToken = randomBytes(30).toString('base64');
     const refreshToken = randomBytes(30).toString('base64');
 
