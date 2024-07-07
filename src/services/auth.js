@@ -8,10 +8,17 @@ import { SessionsCollection } from "../db/models/session.js";
 
 export const registerUser = async (payload) => {
 
-    const encryptedPassword = await bcrypt.hash(payload.password, 10);
-    return await UsersCollection.create({
-        ...payload,
-    password:encryptedPassword});
+  const user = await UsersCollection.findOne({
+    email: payload.email,
+  });
+  if (user) {
+    throw createHttpError(409, 'Email in use');
+  }
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
+  return await UsersCollection.create({
+    ...payload,
+    password: encryptedPassword,
+  });
 }
 
 
@@ -40,7 +47,7 @@ export const logautUser = async (sessionId) => {
     })
 };
 
-const createSesiion = () => {
+const createSession = () => {
     const accessToken = randomBytes(30).toString('base64');
     const refreshToken = randomBytes(30).toString('base64');
 
@@ -65,7 +72,7 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
     const isSessionTokenExpired = new Date() > new Date(session.refreshTokenValidUntil);
 
     if (isSessionTokenExpired) {
-       throw createHttpError(401, 'Session token expired');
+        throw createHttpError(401, 'Session token expired');
     }
     const newSession = createSession();
     await SessionsCollection.deleteOne({
@@ -75,5 +82,9 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
         userId: session.userId,
         ...newSession,
     })
-}
+};
+
+export const logoutUser = async (sessionId) => {
+  await SessionsCollection.deleteOne({ _id: sessionId });
+};
 
