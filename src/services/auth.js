@@ -15,10 +15,11 @@ export const registerUser = async (payload) => {
     throw createHttpError(409, 'Email in use');
   }
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
-  return await UsersCollection.create({
+    const registeredUser=await UsersCollection.create({
     ...payload,
     password: encryptedPassword,
-  });
+    });
+      return registeredUser;
 }
 
 
@@ -29,7 +30,12 @@ export const loginUser = async (payload) => {
     if (!user) {
         throw createHttpError(404, 'User not found');
     }
-    const isEqual = await bcrypt.compare(payload.password, user.password)
+    const isEqual = await bcrypt.compare(payload.password, user.password);
+    await SessionCollection.deleteOne({ userId: user._id });
+
+  const accessToken = randomBytes(30).toString('base64');
+  const refreshToken = randomBytes(30).toString('base64');
+
     if (!isEqual) {
         throw createHttpError(401, 'Unauthorized')
     }
@@ -41,12 +47,6 @@ export const loginUser = async (payload) => {
         refreshTokenValidUntil: new Date(Date.now() + ONE_DAY)
     })
 };
-export const logautUser = async (sessionId) => {
-    await SessionsCollection.deleteOne({
-        _id: sessionId
-    })
-};
-
 const createSession = () => {
     const accessToken = randomBytes(30).toString('base64');
     const refreshToken = randomBytes(30).toString('base64');
@@ -84,7 +84,9 @@ export const refreshUserSession = async ({ sessionId, refreshToken }) => {
     })
 };
 
-export const logoutUser = async (sessionId) => {
-  await SessionsCollection.deleteOne({ _id: sessionId });
+export const logautUser = async (sessionId) => {
+    await SessionsCollection.deleteOne({
+        _id: sessionId
+    })
 };
 

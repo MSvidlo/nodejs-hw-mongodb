@@ -1,6 +1,6 @@
 import contactsCollection  from "../db/models/contacts.js";
 import { calculatePaginationData } from "../utils/calculatePaginationData.js";
-import { SORT_ORDER } from '../index.js';
+import { SORT_ORDER } from '../constants/index.js';
 
 
 export const getAllContacts = async ({
@@ -17,15 +17,15 @@ export const getAllContacts = async ({
   const contactsQuery = contactsCollection.find({ userId })
     .skip(skip)
     .limit(limit)
-    .sort({[sortBy]:sortOrder});
-  if (filter.isFavourite !== undefined) {
-    const persedIsFavourite = parseFilterParams(filter.isFavourite);
-     if (parsedIsFavourite !== undefined) {
-      contactsQuery = contactsQuery
-        .where('isFavourite')
-        .equals(parsedIsFavourite);
-    }
+    .sort({ [sortBy]: sortOrder });
+
+  if (filter.isFavourite) {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
   }
+  if (filter.contactType) {
+    contactsQuery.where('contactType').equals(filter.contactType);
+  }
+  
   const contactsCount = await contactsCollection.countDocuments({ userId });
   const contacts = await contactsQuery.exec();
   const paginationData = calculatePaginationData(contactsCount, limit, page);
