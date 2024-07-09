@@ -4,7 +4,7 @@ import { validateBody } from "../middlewares/validateBody.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
 import { registerUserSchema } from "../validation/auth.js";
 import { loginUserSchema } from "../validation/auth.js";
-import { loginUserContoller } from "../controllers/auth.js";
+import { loginUserController } from "../controllers/auth.js";
 import { logoutUserController } from "../controllers/auth.js";
 import { refreshUserSessionController } from '../controllers/auth.js';
 
@@ -16,7 +16,7 @@ router.post
         ctrlWrapper(registerUserController));
 
 router.post('/login', validateBody(loginUserSchema),
-    ctrlWrapper(loginUserContoller));
+    ctrlWrapper(loginUserController));
 
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
 
