@@ -19,7 +19,11 @@ export const registerUser = async (payload) => {
     ...payload,
     password: encryptedPassword,
     });
-      return registeredUser;
+
+  const userWithoutPassword = { ...registeredUser._doc };
+  delete userWithoutPassword.password;
+
+  return userWithoutPassword;
 }
 
 
