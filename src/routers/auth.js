@@ -15,7 +15,8 @@ router.post
         validateBody(registerUserSchema),
         ctrlWrapper(registerUserController));
 
-router.post('/login', validateBody(loginUserSchema),
+router.post('/login',
+    validateBody(loginUserSchema),
     ctrlWrapper(loginUserController));
 
 router.post('/refresh', ctrlWrapper(refreshUserSessionController));
