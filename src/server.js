@@ -8,6 +8,7 @@ import { notFoundHandler } from './middlewares/notFoundHandlers.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import contactsRouter from './routers/contacts.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 dotenv.config();
 
@@ -44,7 +45,7 @@ export const setupServer = () => {
   // Використання маршрутизаторів
   app.use(router);
   app.use('/contacts', contactsRouter);
-
+app.use('/uploads', express.static(UPLOAD_DIR));
   // Обробник помилок
   app.use(errorHandler);
 
