@@ -25,7 +25,7 @@ export const getAllContacts = async ({
   if (filter.contactType) {
     contactsQuery.where('contactType').equals(filter.contactType);
   }
-  
+
   const contactsCount = await contactsCollection.countDocuments({ userId });
   const contacts = await contactsQuery.exec();
   const paginationData = calculatePaginationData(contactsCount, limit, page);
@@ -37,7 +37,7 @@ export const getAllContacts = async ({
 };
 
 export const getContactsById = async (contactId, userId) => {
-  const contact = await contactsCollection.findOne({ _id: contactId, userId });
+  const contact = await contactsCollection.findOne({ _id:contactId, userId });
   return contact;
 };
 

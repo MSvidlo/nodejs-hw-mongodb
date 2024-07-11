@@ -9,7 +9,7 @@ export const getContactController = async (req, res, next) => {
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query);
     const filter = parseFilterParams(req.query);
-    const userId = req.user._id;  // Додано визначення userId
+    const userId = req.user._id;
     const contacts = await getAllContacts({
       page,
       perPage,
@@ -31,9 +31,9 @@ export const getContactController = async (req, res, next) => {
 
 export const getContactByIdController = async (req, res, next) => {
   const { contactId } = req.params;
-  const userId = req.user._id;
+
   try {
-    const contact = await getContactsById(contactId, userId);
+    const contact = await getContactsById(contactId);
     if (!contact) {
       return next(createHttpError(404, 'Contact not found'));
     }
@@ -65,20 +65,21 @@ export const createContactController = async (req, res, next) => {
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
   const photo = req.file;
+  let photoUrl;
 
-  {
-		  fieldname: 'photo',
-		  originalname: 'download.jpeg',
-		  encoding: '7bit',
-		  mimetype: 'image/jpeg',
-		  destination: '/Users/borysmeshkov/Projects/goit-study/students-app/temp',
-		  filename: '1710709919677_download.jpeg',
-		  path: '/Users/borysmeshkov/Projects/goit-study/students-app/temp/1710709919677_download.jpeg',
-		  size: 7
-	  }
-  const userId = req.user._id;
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
+  }
+
   try {
-    const result = await changeContact(contactId, req.body, userId);
+    const result = await changeContact(contactId, {
+    ...req.body,
+    photo: photoUrl,
+  });
     if (!result) {
       return next(createHttpError(404, 'Contact not found'));
     }
