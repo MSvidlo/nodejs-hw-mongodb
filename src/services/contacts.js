@@ -1,29 +1,33 @@
 import contactsCollection  from "../db/models/contacts.js";
 import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 import { SORT_ORDER } from '../constants/index.js';
+import mongoose from 'mongoose';
 
-
-export const getAllContacts = async ({
-  page = 1,
+const { ObjectId } = mongoose.Types;
+export const getAllContacts = async (
+   page = 1,
   perPage = 10,
+  sortBy = 'name',
   sortOrder = SORT_ORDER.ASC,
-  sortBy = '_id',
   filter = {},
   userId,
-}) => {
+) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
-  const contactsQuery = contactsCollection.find({ userId })
+  let contactsQuery = contactsCollection
+    .find({ userId })
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder });
 
-  if (filter.isFavourite) {
-    contactsQuery.where('isFavourite').equals(filter.isFavourite);
-  }
-  if (filter.contactType) {
-    contactsQuery.where('contactType').equals(filter.contactType);
+  if (filter.isFavourite !== undefined) {
+    const parsedIsFavourite = parseFilterParams(filter.isFavourite);
+    if (parsedIsFavourite !== undefined) {
+      contactsQuery = contactsQuery
+        .where('isFavourite')
+        .equals(parsedIsFavourite);
+    }
   }
 
   const contactsCount = await contactsCollection.countDocuments({ userId });
@@ -36,8 +40,7 @@ export const getAllContacts = async ({
   };
 };
 
-export const getContactsById = async (contactId, userId) => {
-  const contact = await contactsCollection.findOne({ _id:contactId, userId });
+export const getContactsById = async (contactId, userId) => {  const contact = await contactsCollection.findOne({ _id: contactId, userId });
   return contact;
 };
 

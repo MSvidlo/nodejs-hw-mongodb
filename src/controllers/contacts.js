@@ -47,20 +47,33 @@ export const getContactByIdController = async (req, res, next) => {
   }
 };
 
-export const createContactController = async (req, res, next) => {
-  const userId = req.user._id;
-  try {
-    const contact = await createContact({ ...req.body, userId });
+export const createContactController = async (req, res) => {
+  const photo = req.file;
 
-    res.status(201).json({
-      status: 201,
-      message: 'Successfully created a contact',
-      data: contact,
-    });
-  } catch (error) {
-    next(error);
+  let photoUrl;
+
+  if (photo) {
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
+  const combinedPayload = {
+    ...req.body,
+    userId: req.user._id,
+    photo: photoUrl,
+  };
+
+  const contact = await createContact(combinedPayload);
+
+  res.status(201).json({
+    status: res.statusCode,
+    message: 'Successfully created a contact!',
+    data: { contact },
+  });
 };
+
 
 export const patchContactController = async (req, res, next) => {
   const { contactId } = req.params;
@@ -76,7 +89,7 @@ export const patchContactController = async (req, res, next) => {
   }
 
   try {
-    const result = await changeContact(contactId, {
+    const result = await changeContact(contactId, userId,{
     ...req.body,
     photo: photoUrl,
   });
