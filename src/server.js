@@ -1,32 +1,26 @@
 import express from 'express';
-import pino from 'pino-http';
-import cors from 'cors';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import pino from 'pino-http';
+
 import { env } from './utils/env.js';
-import router from './routers/index.js';
-import { notFoundHandler } from './middlewares/notFoundHandlers.js';
 import { errorHandler } from './middlewares/errorHandler.js';
-import contactsRouter from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import router from './routers/index.js';
 import cookieParser from 'cookie-parser';
 import { UPLOAD_DIR } from './constants/index.js';
 
 dotenv.config();
 
-const PORT = Number(env('PORT', '3007'));
+const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
   const app = express();
 
-  // Парсинг cookies
-  app.use(cookieParser());
-
-  // Парсинг JSON
   app.use(express.json());
 
-  // Дозвіл на CORS
   app.use(cors());
 
-  // Логування запитів
   app.use(
     pino({
       transport: {
@@ -35,24 +29,16 @@ export const setupServer = () => {
     })
   );
 
-  // Головний маршрут
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World!',
-    });
-  });
+  app.use(cookieParser());
 
-  // Використання маршрутизаторів
   app.use(router);
-  app.use('/contacts', contactsRouter);
-app.use('/uploads', express.static(UPLOAD_DIR));
-  // Обробник помилок
-  app.use(errorHandler);
 
-  // Обробник маршруту 404
   app.use('*', notFoundHandler);
 
-  // Запуск сервера
+  app.use(errorHandler);
+
+  app.use('/uploads', express.static(UPLOAD_DIR));
+
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
