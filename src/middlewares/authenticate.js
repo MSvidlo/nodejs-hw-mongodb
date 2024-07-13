@@ -1,6 +1,7 @@
+import CreateHttpErrors from 'http-errors';
+import { SessionsCollection } from '../db/session.js';
+import { UsersCollection } from '../db/user.js';
 import createHttpError from 'http-errors';
-import { SessionCollection } from '../db/models/session.js';
-import { UserCollection } from '../db/models/user.js';
 
 export const authenticate = async (req, res, next) => {
   const authHeader = req.get('Authorization');
@@ -17,8 +18,9 @@ export const authenticate = async (req, res, next) => {
     next(createHttpError(401, 'Auth header should be of type Bearer'));
     return;
   }
-
-  const session = await SessionCollection.findOne({ accessToken: token });
+  const session = await SessionsCollection.findOne({
+    accessToken: token,
+  });
 
   if (!session) {
     next(createHttpError(401, 'Session not found'));
@@ -32,7 +34,7 @@ export const authenticate = async (req, res, next) => {
     next(createHttpError(401, 'Access token expired'));
   }
 
-  const user = await UserCollection.findById(session.userId);
+  const user = await UsersCollection.findById(session.userId);
 
   if (!user) {
     next(createHttpError(401));

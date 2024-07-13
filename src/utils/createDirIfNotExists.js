@@ -1,6 +1,6 @@
-import fs from 'node:fs/promises';
+import fs from 'fs/promises';
 
-export const createNewDir = async url => {
+export const createDirIfNotExists = async (url) => {
   try {
     await fs.access(url);
   } catch (err) {

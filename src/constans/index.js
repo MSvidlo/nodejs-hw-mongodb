@@ -1,10 +1,9 @@
-import * as path from 'node:path';
+import path from 'path';
 
 export const SORT_ORDER = {
   ASC: 'asc',
   DESC: 'desc',
 };
-
 export const FIFTEEN_MINUTES = 15 * 60 * 1000;
 export const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
@@ -14,17 +13,26 @@ export const SMTP = {
   SMTP_USER: 'SMTP_USER',
   SMTP_PASSWORD: 'SMTP_PASSWORD',
   SMTP_FROM: 'SMTP_FROM',
+  JWT_SECRET: 'JWT_SECRET',
+  APP_DOMAIN: 'APP_DOMAIN',
 };
 
 export const TEMPLATES_DIR = path.join(process.cwd(), 'src', 'templates');
 
 export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
+
 export const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 
 export const CLOUDINARY = {
-  CLOUDINARY_CLOUD_NAME: 'CLOUDINARY_CLOUD_NAME',
-  CLOUDINARY_API_KEY: 'CLOUDINARY_API_KEY',
-  CLOUDINARY_API_SECRET: 'CLOUDINARY_API_SECRET',
+  CLOUD_NAME: 'CLOUD_NAME',
+  API_KEY: 'API_KEY',
+  API_SECRET: 'API_SECRET',
+  ENABLE_CLOUDINARY: 'ENABLE_CLOUDINARY',
 };
 
 export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
+
+export const ENV_VARS = {
+  GOOGLE_AUTH_CLIENT_ID: 'GOOGLE_AUTH_CLIENT_ID',
+  GOOGLE_AUTH_CLIENT_SECRET: 'GOOGLE_AUTH_CLIENT_SECRET',
+};
