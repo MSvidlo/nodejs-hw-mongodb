@@ -6,7 +6,7 @@ import { parseFilterParams } from '../utils/parseFilterParams.js';
 export const getAllContacts = async (
   page = 1,
   perPage = 10,
-  sortBy = 'name',
+  sortBy = '_id',
   sortOrder = SORT_ORDER.ASC,
   filter = {},
   userId,
