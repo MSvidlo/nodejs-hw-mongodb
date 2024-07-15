@@ -11,9 +11,6 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3007"
-    },
-    {
       "url": "https://nodejs-hw-mongodb-4-6ty0.onrender.com"
     }
   ],
@@ -213,7 +210,7 @@
                   "isFavourite": {
                     "type": "boolean",
                     "description": "Indicates if the contact is a favourite",
-                    "example": null
+                    "example": true
                   },
                   "contactType": {
                     "type": "string",
@@ -228,40 +225,43 @@
                   "photo": {
                     "type": "string",
                     "format": "binary",
-                    "description": "File upload for the contact photo",
-                    "example": "https://res.cloudinary.com/dkp6r3ryz/image/upload/v1720687917/jbvobqd4hn2ttqswed7j.jpg"
+                    "description": "File upload for the contact photo"
                   }
                 }
               }
             }
           }
         },
-        "responses":{
-  "201": {
-    "description": "Contact created successfully",
-    "content": {
-      "application/json": {
-        "schema": {
-          "type": "object",
-          "properties": {
-            "status": {
-              "type": "integer",
-              "example": 201
-            },
-            "message": {
-              "type": "string",
-              "example": "Successfully created contact!"
-            },
-            "data": {
-              "type": "object",
-              "$ref": "#/components/schemas/contact"
+        "responses": {
+          "201": {
+            "description": "Contact created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created contact!"
+                    },
+                    "data": {
+                      "type": "object",
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
+                }
+              }
             }
-          }
-        }
-      }
-    }
-  }
-},
+          },
           "401": {
             "$ref": "#/components/responses/401"
           }
@@ -503,7 +503,8 @@
                   }
                 }
               }
-            } ,
+            }
+          },
           "401": {
             "$ref": "#/components/responses/401"
           },
