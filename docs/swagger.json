@@ -59,7 +59,7 @@
             "in": "query",
             "name": "sortBy",
             "schema": {
-              "type": "string"
+              "type": "string",
 
             },
             "description": "All contact's fields can be mentioned. Default value - _id"
