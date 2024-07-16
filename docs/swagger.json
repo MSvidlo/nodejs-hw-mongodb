@@ -72,8 +72,8 @@
               "enum": [
                 "asc",
                 "desc"
-              ],
-              "example": "asc"
+              ]
+
             }
           },
           {
