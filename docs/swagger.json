@@ -7,11 +7,11 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is a documentation of contacts app\n"
+    "description": "This is a documentation of contacts app"
   },
   "servers": [
     {
-      "url": "https://nodejs-hw-mongodb-4-6ty0.onrender.com"
+      "url": "https://nodejs-hw-mongodb-4-5skm.onrender.com"
     }
   ],
   "tags": [
@@ -59,7 +59,7 @@
             "in": "query",
             "name": "sortBy",
             "schema": {
-              "type": "string",
+              "type": "string"
 
             },
             "description": "All contact's fields can be mentioned. Default value - _id"
@@ -81,7 +81,6 @@
             "name": "contactType",
             "schema": {
               "type": "string"
-
             }
           },
           {
