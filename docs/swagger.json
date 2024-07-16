@@ -51,16 +51,16 @@
             "in": "query",
             "name": "perPage",
             "schema": {
-              "type": "integer"
-
+              "type": "integer",
+              "example": 10
             }
           },
           {
             "in": "query",
             "name": "sortBy",
             "schema": {
-              "type": "string"
-
+              "type": "string",
+              "example": "name"
             },
             "description": "All contact's fields can be mentioned. Default value - _id"
           },
@@ -72,23 +72,24 @@
               "enum": [
                 "asc",
                 "desc"
-              ]
-
+              ],
+              "example": "asc"
             }
           },
           {
             "in": "query",
             "name": "contactType",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "work"
             }
           },
           {
             "in": "query",
             "name": "isFavourite",
             "schema": {
-              "type": "boolean"
-
+              "type": "boolean",
+              "example": false
             }
           }
         ],
