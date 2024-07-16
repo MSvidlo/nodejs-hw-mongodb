@@ -7,7 +7,7 @@
       "name": "Apache 2.0",
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "description": "This is a documentation of contacts app"
+    "description": "This is a documentation of contacts app\n"
   },
   "servers": [
     {
@@ -59,10 +59,9 @@
             "in": "query",
             "name": "sortBy",
             "schema": {
-              "type": "string"
-
-            },
-            "description": "All contact's fields can be mentioned. Default value - _id"
+              "type": "string",
+              "description": "All contact's fields can be mentioned. Default value - _id"
+            }
           },
           {
             "in": "query",
@@ -73,7 +72,6 @@
                 "asc",
                 "desc"
               ]
-
             }
           },
           {
@@ -88,7 +86,6 @@
             "name": "isFavourite",
             "schema": {
               "type": "boolean"
-
             }
           }
         ],
