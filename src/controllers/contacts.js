@@ -41,13 +41,13 @@ export const getContactsByIdController = async (req, res, next) => {
   const { contactId } = req.params;
   const contact = await getContactById(contactId);
 
-  if (req.user._id.toString() !== contact.userId.toString())
-    throw createHttpError(401, 'Unauthorised');
-
   if (!contact) {
     next(createHttpError(404, 'Contact not found'));
     return;
   }
+
+  if (req.user._id.toString() !== contact.userId.toString())
+    throw createHttpError(401, 'Unauthorised');
 
   res.status(200).json({
     status: res.statusCode,
@@ -88,6 +88,11 @@ export const patchContactController = async (req, res, next) => {
   const contact = await getContactById(contactId);
   const photo = req.file;
 
+  if (!contact) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
+
   let photoUrl;
 
   if (photo) {
@@ -118,8 +123,12 @@ export const patchContactController = async (req, res, next) => {
 
 export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
-
   const contactData = await getContactById(contactId);
+
+  if (!contactData) {
+    next(createHttpError(404, 'Contact not found'));
+    return;
+  }
 
   if (req.user._id.toString() !== contactData.userId.toString())
     throw createHttpError(401, 'Unauthorised');
